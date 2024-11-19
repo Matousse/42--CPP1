@@ -2,7 +2,7 @@
 #include "PhoneBook.class.hpp"
 #include <iostream>
 #include <iomanip>
-#include <cstdlib> 
+#include <cstdlib>
 
 PhoneBook::PhoneBook() : currentIndex(0), totalContacts(0) {}
 
@@ -22,14 +22,14 @@ bool PhoneBook::isValidInput(const std::string& input) const {
 std::string PhoneBook::getInput(const std::string& prompt) const {
     std::string input;
 
-    while (true) 
+    while (true)
     {
         std::cout << prompt;
         std::getline(std::cin, input);
         if (std::cin.eof())
             exit(0);
         if (!isValidInput(input))
-            printf("Field cannot be empty");
+            std::cout << "Field cannot be empty" << std::endl;
         if (isValidInput(input))
             break;
     }
@@ -79,7 +79,7 @@ void PhoneBook::searchContact() const {
 
     displayContactList();
     std::string input = getInput("Enter index to display: ");
-    
+
     int index = std::atoi(input.c_str());
     if (index >= 0 && index < totalContacts)
         displayContact(index);

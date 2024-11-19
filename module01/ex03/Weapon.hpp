@@ -1,6 +1,9 @@
 #ifndef WEAPON_HPP
 #define WEAPON_HPP
 
+#define RED "\033[31m"
+#define RESET "\033[0m"
+
 #include <string>
 #include <iostream>
 

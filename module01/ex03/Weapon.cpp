@@ -7,7 +7,7 @@ Weapon::Weapon(std::string type)
 
 Weapon::~Weapon()
 {
-
+    std::cout << RED << "A weapon of type " + type + " was destroyed" << RESET << std::endl;
 }
 
 std::string Weapon::getType() const

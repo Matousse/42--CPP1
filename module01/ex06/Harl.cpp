@@ -32,10 +32,29 @@ void Harl::error(void) {
 }
 
 void Harl::complain(std::string level) {
-    for (int i = 0; i < 4; i++) {
-        if (levels[i].name == level) {
-            (this->*levels[i].function)();
-            return;
-        }
+    int i = 0;
+    while (i < 4 && levels[i].name != level)
+        i++;
+
+    switch (i) {
+        case 0:
+            std::cout << "[ DEBUG ]" << std::endl;
+            (this->*levels[0].function)();
+            std::cout << std::endl;
+        case 1:
+            std::cout << "[ INFO ]" << std::endl;
+            (this->*levels[1].function)();
+            std::cout << std::endl;
+        case 2:
+            std::cout << "[ WARNING ]" << std::endl;
+            (this->*levels[2].function)();
+            std::cout << std::endl;
+        case 3:
+            std::cout << "[ ERROR ]" << std::endl;
+            (this->*levels[3].function)();
+            std::cout << std::endl;
+            break;
+        default:
+            std::cout << "[ Blablabla ... ]" << std::endl;
     }
 }
