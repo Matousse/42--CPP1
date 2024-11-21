@@ -1,0 +1,413 @@
+#include "ClapTrap.hpp"
+
+ClapTrap::ClapTrap() : hitPoints(10), energyPoints (10), attackDamage(0)
+{
+	std::cout << GREEN << "ClapTrap Standard Constructor called" << RESET << std::endl;
+}
+
+ClapTrap::ClapTrap(std::string name) : hitPoints(10), energyPoints (10), attackDamage(0)
+{
+	std::cout << GREEN << "ClapTrap With String Constructor called" << RESET << std::endl;
+	this->name = name;
+}
+
+ClapTrap::~ClapTrap()
+{
+	std::cout << RED << "ClapTrap Destructor called" << RESET << std::endl;
+}
+
+
+void ClapTrap::attack(const std::string& target)
+{
+
+	if (hitPoints == 0)
+	{
+		std::cout << "ClapTrap is likely dead and cannot do any action :/" << std::endl;
+		return;
+	}
+	if (energyPoints == 0)
+	{
+		std::cout << "ClapTrap has no energy left, thus cannot do any action" << std::endl;
+		return;
+	}
+	energyPoints -= 1;
+	std::cout << "ClapTrap " << name << " attacks " << target << ", causing " << attackDamage << " points of damage!" << std::endl;
+}
+void ClapTrap::takeDamage(unsigned int amount)
+{
+    if (hitPoints == 0)
+    {
+        std::cout << getType() << " is already dead, COULD YOU PLEASE STOP IT ?" << std::endl;
+        return;
+    }
+    if (((hitPoints - static_cast<int>(amount)) <= 0))
+        hitPoints = 0;
+    else
+        hitPoints -= static_cast<int>(amount);
+    std::cout << getType() <<  " " << name << " just took " <<  amount << " points of damage! " << hitPoints << " HP left." << std::endl;
+}
+void ClapTrap::beRepaired(unsigned int amount)
+{
+	if (hitPoints == 0)
+	{
+		std::cout << "ClapTrap is likely dead and cannot do any action :/" << std::endl;
+		return;
+	}
+	if (energyPoints == 0)
+	{
+		std::cout << "ClapTrap has no energy left, thus cannot do any action" << std::endl;
+		return;
+	}
+	hitPoints += amount;
+	energyPoints -= 1;
+	std::cout << "ClapTrap " << name << " was healed of " << amount << " HP and now has " << hitPoints << " HP." << std::endl;
+}
+
+// et au cas ou
+
+ClapTrap::ClapTrap(const ClapTrap& other)
+    : name(other.name), hitPoints(other.hitPoints),
+      energyPoints(other.energyPoints), attackDamage(other.attackDamage)
+{
+    std::cout << "Copy constructor called" << std::endl;
+}
+ClapTrap& ClapTrap::operator=(const ClapTrap& other)
+{
+    if (this != &other)
+    {
+        name = other.name;
+        hitPoints = other.hitPoints;
+        energyPoints = other.energyPoints;
+        attackDamage = other.attackDamage;
+    }
+    return *this;
+}
+#ifndef CLAPTRAP_HPP
+#define CLAPTRAP_HPP
+
+#define RED "\033[31m"
+#define RESET "\033[0m"
+#define GREEN "\033[32m"
+
+#include <iostream>
+#include <string>
+
+class ClapTrap
+{
+protected:
+	std::string name;
+	int hitPoints;
+	int energyPoints;
+	int attackDamage;
+
+	virtual std::string getType() const { return "ClapTrap"; }
+	
+public:
+	ClapTrap();
+	ClapTrap(std::string name);
+	virtual ~ClapTrap();
+	ClapTrap(const ClapTrap& other);
+
+	void attack(const std::string& target);
+	void takeDamage(unsigned int amount);
+	void beRepaired(unsigned int amount);
+
+	ClapTrap& operator=(const ClapTrap& other);
+};
+
+#endif
+#include "FragTrap.hpp"
+
+FragTrap::FragTrap() : ClapTrap()
+{
+    this->hitPoints = 100;
+    this->energyPoints = 50;
+    this->attackDamage = 20;
+    std::cout << GREEN << "FragTrap Standard Constructor called" << RESET << std::endl;
+}
+
+FragTrap::FragTrap(std::string name) : ClapTrap(name)
+{
+    this->hitPoints = 100;
+    this->energyPoints = 50;
+    this->attackDamage = 20;
+    std::cout << GREEN << "FragTrap With String Constructor called" << RESET << std::endl;
+}
+
+FragTrap::~FragTrap()
+{
+    std::cout << RED << "FragTrap Destructor called" << RESET << std::endl;
+}
+
+FragTrap::FragTrap(const FragTrap& other) : ClapTrap(other)
+{
+    std::cout << "FragTrap Copy constructor called" << std::endl;
+}
+
+FragTrap& FragTrap::operator=(const FragTrap& other)
+{
+    if (this != &other)
+    {
+        ClapTrap::operator=(other);
+    }
+    return *this;
+}
+
+void FragTrap::attack(const std::string& target)
+{
+    if (hitPoints == 0)
+    {
+        std::cout << "FragTrap is likely dead and cannot do any action :/" << std::endl;
+        return;
+    }
+    if (energyPoints == 0)
+    {
+        std::cout << "FragTrap has no energy left, thus cannot do any action" << std::endl;
+        return;
+    }
+    energyPoints -= 1;
+    std::cout << "FragTrap " << name << " attacks " << target << ", causing " << attackDamage << " points of damage!" << std::endl;
+}
+
+void FragTrap::highFiveGuys()
+{
+    if (hitPoints == 0)
+    {
+        std::cout << "FragTrap is dead and cannot high five anymore :/" << std::endl;
+        return;
+    }
+    if (energyPoints == 0)
+    {
+        std::cout << "FragTrap has no energy left to make a high five" << std::endl;
+        return;
+    }
+    std::cout << "FragTrap " << name << " sends a positive high five request." << std::endl;
+}
+
+void FragTrap::beRepaired(unsigned int amount)
+{
+    if (hitPoints == 0)
+    {
+        std::cout << "FragTrap is likely dead and cannot do any action :/" << std::endl;
+        return;
+    }
+    if (energyPoints == 0)
+    {
+        std::cout << "FragTrap has no energy left, thus cannot do any action" << std::endl;
+        return;
+    }
+    hitPoints += amount;
+    energyPoints -= 1;
+    std::cout << "FragTrap " << name << " was healed of " << amount << " HP and now has " << hitPoints << " HP." << std::endl;
+}
+#ifndef FRAGTRAP_HPP
+#define FRAGTRAP_HPP
+
+#include "ClapTrap.hpp"
+
+class FragTrap : public ClapTrap
+{
+protected:
+
+    virtual std::string getType() const { return "FragTrap"; }
+
+public:
+    FragTrap();
+    FragTrap(std::string name);
+    FragTrap(const FragTrap& other);
+    ~FragTrap();
+
+    FragTrap& operator=(const FragTrap& other);
+
+    void attack(const std::string& target);
+    void highFiveGuys();
+    void beRepaired(unsigned int amount);
+
+};
+
+#endif
+#include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
+#include "FragTrap.hpp"
+
+int main (void)
+{
+	ClapTrap jojofrip = ClapTrap("Jojo la fripouille");
+
+	jojofrip.attack("Robert");
+	jojofrip.takeDamage(5);
+	jojofrip.attack("Robert");
+	jojofrip.beRepaired(10);
+	jojofrip.attack("Robert");
+
+	//now, no hitpoints
+
+	jojofrip.takeDamage(15);
+	jojofrip.beRepaired(10);
+	jojofrip.attack("Robert");
+	jojofrip.takeDamage(5);
+
+	ScavTrap trapiTrapon = ScavTrap("Bouzi Bouzin");
+
+	trapiTrapon.attack("Marine");
+	trapiTrapon.beRepaired(10);
+	trapiTrapon.guardGate();
+	trapiTrapon.takeDamage(100);
+	trapiTrapon.takeDamage(100);
+	trapiTrapon.attack("Marine");
+	trapiTrapon.beRepaired(10);
+	trapiTrapon.guardGate();
+	trapiTrapon.takeDamage(100);
+
+	FragTrap georgie = FragTrap("Georgie");
+
+	georgie.attack("Marine");
+	georgie.beRepaired(10);
+	georgie.highFiveGuys();
+	georgie.takeDamage(100);
+	georgie.takeDamage(100);
+	georgie.attack("Marine");
+	georgie.beRepaired(10);
+	georgie.highFiveGuys();
+	georgie.takeDamage(100);
+
+}
+NAME = FragTrap
+
+CC = c++
+CFLAGS = -Wall -Wextra -Werror -std=c++98
+
+SRCS = main.cpp \
+	ClapTrap.cpp \
+	ScavTrap.cpp \
+	FragTrap.cpp \
+
+OBJS = $(SRCS:.cpp=.o)
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
+#include "ScavTrap.hpp"
+
+ScavTrap::ScavTrap() : ClapTrap()
+{
+    this->hitPoints = 100;
+    this->energyPoints = 100;
+    this->attackDamage = 30;
+    std::cout << GREEN << "ScavTrap Standard Constructor called" << RESET << std::endl;
+}
+
+ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
+{
+    this->hitPoints = 100;
+    this->energyPoints = 100;
+    this->attackDamage = 30;
+    std::cout << GREEN << "ScavTrap With String Constructor called" << RESET << std::endl;
+}
+
+ScavTrap::~ScavTrap()
+{
+    std::cout << RED << "ScavTrap Destructor called" << RESET << std::endl;
+}
+
+ScavTrap::ScavTrap(const ScavTrap& other) : ClapTrap(other)
+{
+    std::cout << "ScavTrap Copy constructor called" << std::endl;
+}
+
+ScavTrap& ScavTrap::operator=(const ScavTrap& other)
+{
+    if (this != &other)
+    {
+        ClapTrap::operator=(other);
+    }
+    return *this;
+}
+
+void ScavTrap::attack(const std::string& target)
+{
+    if (hitPoints == 0)
+    {
+        std::cout << "ScavTrap is likely dead and cannot do any action :/" << std::endl;
+        return;
+    }
+    if (energyPoints == 0)
+    {
+        std::cout << "ScavTrap has no energy left, thus cannot do any action" << std::endl;
+        return;
+    }
+    energyPoints -= 1;
+    std::cout << "ScavTrap " << name << " attacks " << target << ", causing " << attackDamage << " points of damage!" << std::endl;
+}
+
+void ScavTrap::guardGate()
+{
+    if (hitPoints == 0)
+    {
+        std::cout << "ScavTrap is dead and cannot guard anything :/" << std::endl;
+        return;
+    }
+    if (energyPoints == 0)
+    {
+        std::cout << "ScavTrap has no energy left to guard the gate" << std::endl;
+        return;
+    }
+    std::cout << "ScavTrap " << name << " is now in Gate keeper mode!" << std::endl;
+}
+
+void ScavTrap::beRepaired(unsigned int amount)
+{
+    if (hitPoints == 0)
+    {
+        std::cout << "ScavTrap is likely dead and cannot do any action :/" << std::endl;
+        return;
+    }
+    if (energyPoints == 0)
+    {
+        std::cout << "ScavTrap has no energy left, thus cannot do any action" << std::endl;
+        return;
+    }
+    hitPoints += amount;
+    energyPoints -= 1;
+    std::cout << "ScavTrap " << name << " was healed of " << amount << " HP and now has " << hitPoints << " HP." << std::endl;
+}
+#ifndef SCAVTRAP_HPP
+#define SCAVTRAP_HPP
+
+#include "ClapTrap.hpp"
+
+class ScavTrap : public ClapTrap
+{
+protected:
+
+    virtual std::string getType() const { return "ScavTrap"; }
+
+public:
+    ScavTrap();
+    ScavTrap(std::string name);
+    ScavTrap(const ScavTrap& other);
+    ~ScavTrap();
+
+    ScavTrap& operator=(const ScavTrap& other);
+
+    void attack(const std::string& target);
+    void guardGate();
+    void beRepaired(unsigned int amount);
+
+};
+
+#endif

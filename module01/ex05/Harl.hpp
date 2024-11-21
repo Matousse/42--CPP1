@@ -16,7 +16,7 @@ private:
         std::string name;
         FunctionPointer function;
     };
-    
+
     static Level levels[4];
 
 public:
